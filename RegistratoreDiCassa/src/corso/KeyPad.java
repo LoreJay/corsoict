@@ -19,8 +19,6 @@ public class KeyPad extends JPanel implements ActionListener{
 	//===========CALCULATOR PANEL============//
 	JPanel calc = new JPanel();
 	
-	
-	
 	//===========KEYPAD STRING================//
 	private static final String CMD_SUB = "-";
 	private static final String CMD_0 = "0";

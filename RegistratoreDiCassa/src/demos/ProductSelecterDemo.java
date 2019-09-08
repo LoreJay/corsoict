@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 import corso.ProductSelecter;
 
-public class MainProductSelecter {
+public class ProductSelecterDemo {
 
 	public static void main (String[] args) {
 		

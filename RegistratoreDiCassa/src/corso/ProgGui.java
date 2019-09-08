@@ -1,6 +1,5 @@
 package corso;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,31 +8,33 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-
 
 @SuppressWarnings("serial")
-public class ProgGui extends Container {
+public class ProgGui extends JFrame {
 
 	public static void main (String[] args) {
-		//Container pane = new ProgGui();
-		JFrame frame = new JFrame();
-		
-		frame.add(new ProgGui());
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
+		 //Schedule a job for the event-dispatching thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
+	
 	
 	KeyPad keypad = new KeyPad();
 	ProductList list = new ProductList();
 	ProductSelecter select = new ProductSelecter();
 	
+	//TableDemo list = new TableDemo();
+	
 	JLabel tot = new JLabel("TOTALE €");
 	
 	ProgGui(){
+		
+		// Connessioni fra i widget
+		select.addInternalListener(list); //aggiungo list agli ascoltatori di select		
 		
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints constr = new GridBagConstraints();
@@ -55,6 +56,7 @@ public class ProgGui extends Container {
 		constr.gridx = 0;
 		constr.gridy = 1;
 		constr.gridwidth = 2;
+		constr.weightx = 0.5;
 		
 		select.setPreferredSize(new Dimension(300, 150));
 		this.add(select, constr);
@@ -64,6 +66,8 @@ public class ProgGui extends Container {
 		constr.gridx = 0;
 		constr.gridy = 2;
 		constr.gridwidth = 1;
+		constr.weightx = 0.5;
+
 		
 		keypad.setPreferredSize(new Dimension(150, 150));
 		this.add(keypad, constr);
@@ -99,12 +103,27 @@ public class ProgGui extends Container {
 		constr.gridx = 2;
 		constr.gridy = 0;
 		constr.gridheight = 3;
-		
 		constr.fill = GridBagConstraints.BOTH;
+		constr.weightx = 1;
+		constr.weighty = 1;
+		list.setOpaque(true);
 		
-		//list.setPreferredSize(new Dimension(200, 100));
 		this.add(list, constr);
 		
 		this.setVisible(true);
+		
 	}
+	
+
+	public static void createAndShowGUI() {
+		//Container pane = new ProgGui();
+		ProgGui frame = new ProgGui();	
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.list.aggiungiProdotto(new Product("...", 10f));
+	
+		frame.setVisible(true);
+		frame.pack();
+	}
+
 }
