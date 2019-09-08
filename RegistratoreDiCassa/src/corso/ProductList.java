@@ -7,13 +7,11 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.table.AbstractTableModel;
 
 import internalconnection.AggiuntoProdotto;
 import internalconnection.InterListener;
 import internalconnection.Product;
-import internalconnection.Product.DummyProduct;
 
 @SuppressWarnings("serial")
 public class ProductList extends JPanel implements InterListener {
@@ -25,12 +23,14 @@ public class ProductList extends JPanel implements InterListener {
 	static boolean isEmpty = true;
 	
 	public ProductList() {
+		
 		super(new GridLayout(1, 0));
 
 		myModel = new MyTableModel();
 		table = new JTable(myModel);
+		table.setRowSelectionAllowed(false);
 		
-		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		table.setPreferredScrollableViewportSize(new Dimension(250, 70));
 		table.setFillsViewportHeight(true);
 
 		// Create the scroll pane and add the table to it.
@@ -45,8 +45,7 @@ public class ProductList extends JPanel implements InterListener {
 
 	private class MyTableModel extends AbstractTableModel {
 		
-		String[] columnNames = { "Nome", "Prezzo" };
-		//Vector<Product> data = new Vector<>();
+		String[] columnNames = {"Nome", "Prezzo" };
 
 		@Override
 		public String getColumnName(int col) {
@@ -71,7 +70,7 @@ public class ProductList extends JPanel implements InterListener {
 			}
 			
 			if (columnIndex == 1) {
-				return data.get(rowIndex).getPrice();
+				return "€ " + data.get(rowIndex).getPrice();
 			}
 			
 			return data.get(rowIndex).getName();
@@ -84,16 +83,22 @@ public class ProductList extends JPanel implements InterListener {
 			
 		}
 
+		/*
+		// Non serve
 		@Override
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
+		*/
 		
 	}
 
 	public void aggiungiProdotto(Product prodotto) {
+		
+		
 		data.add(prodotto);
-		myModel.fireTableRowsInserted(data.size() - 1, data.size());
+		
+		myModel.fireTableRowsInserted(0, data.size());
 	}
 
 	@Override
@@ -102,8 +107,13 @@ public class ProductList extends JPanel implements InterListener {
 		Product prodottoDaAggiungere = event.getProdottoAggiunto();
 		
 		aggiungiProdotto(prodottoDaAggiungere);
+		
+		/*
+		//DEBUG >>>>
 		System.out.println("Evento!");
-		for (Product prd : data)
+		for (Object prd : data)
 			System.out.println(prd);
+		*/
 	}
+	
 }

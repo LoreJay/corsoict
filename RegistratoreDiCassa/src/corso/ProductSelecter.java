@@ -1,6 +1,9 @@
 package corso;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -49,26 +52,41 @@ public class ProductSelecter extends JPanel {
 
 		
 		// Layout del panel (this)
-		GridLayout layout = new GridLayout(2, 1);
-		layout.setVgap(5);
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
 		this.setLayout(layout);
 
-		// #1 Row: JComboBox con la lista dei prodotti
+		// JComboBox con la lista dei prodotti
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(10, 5 , 10, 5);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		
 		cmb_products.addActionListener(new ComboAction());
 		((JLabel)cmb_products.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		this.addProducts(productsList);
-		this.add(cmb_products);
+		
+		this.add(cmb_products, c);
 
-		// #2 Row: spazione vuoto e JButton "Aggiungi"
-		JPanel pnl_aux = new JPanel();
-		pnl_aux.setLayout(new GridLayout(1, 2));
+		// Label prezzo
 
+		c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.gridx = 0;
+		c.gridy = 1;
 		lbl_prezzo.setHorizontalAlignment(JLabel.CENTER);
-		pnl_aux.add(lbl_prezzo);
+		this.add(lbl_prezzo, c);
 
+		// Bottone
+		c = new GridBagConstraints();
+		//c.fill = GridBagConstraints.BOTH;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.LINE_END;
+		
 		btn_add.addActionListener(new ButtonAction());
-		pnl_aux.add(btn_add);
-		this.add(pnl_aux);
+		this.add(btn_add, c);
 
 	}
 

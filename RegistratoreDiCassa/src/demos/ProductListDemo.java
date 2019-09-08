@@ -1,9 +1,6 @@
 package demos;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,11 +21,6 @@ public class ProductListDemo implements ActionListener {
 		JButton btn = new JButton("DEBUGG");
 		frame.setLayout(new GridLayout(1,2));
 		
-		/*
-		GridBagConstraints c = new GridBagConstraints();
-
-		c.fill = GridBagConstraints.BOTH;
-		*/
 		btn.addActionListener(new ProductListDemo());
 		frame.add(btn);
 
@@ -39,8 +31,7 @@ public class ProductListDemo implements ActionListener {
 
 		frame.setPreferredSize(new Dimension(300,200));
 		
-		// list.prodottoAggiunto(new AggiuntoProdotto(list, new Product("prova2",
-		// 10f))); //DEBUGG
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack(); // Ridimensiona il frame
 	}
 

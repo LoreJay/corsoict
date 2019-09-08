@@ -47,7 +47,7 @@ public class ProgGui extends JFrame {
 		
 		tot.setHorizontalAlignment(JLabel.CENTER);
 		tot.setVerticalAlignment(JLabel.CENTER);
-		tot.setPreferredSize(new Dimension(300, 75));
+		tot.setPreferredSize(new Dimension(300, 50));
 		this.add(tot, constr);
 		
 		
@@ -58,7 +58,7 @@ public class ProgGui extends JFrame {
 		constr.gridwidth = 2;
 		constr.weightx = 0.5;
 		
-		select.setPreferredSize(new Dimension(300, 150));
+		select.setPreferredSize(new Dimension(300, 90));
 		this.add(select, constr);
 		
 		// KeyPad
@@ -75,6 +75,7 @@ public class ProgGui extends JFrame {
 		// Print button
 		constr = new GridBagConstraints();
 		JButton btn_print = new JButton("Print");
+		
 		/*
 		JPanel pnl_aux = new JPanel();
 		pnl_aux.setLayout(new GridBagLayout());
@@ -116,12 +117,13 @@ public class ProgGui extends JFrame {
 	
 
 	public static void createAndShowGUI() {
-		//Container pane = new ProgGui();
+		
 		ProgGui frame = new ProgGui();	
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.list.aggiungiProdotto(new Product("...", 10f));
-	
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		
 		frame.setVisible(true);
 		frame.pack();
 	}
