@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Vector;
 
-i
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
