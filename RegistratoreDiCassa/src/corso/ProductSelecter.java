@@ -177,12 +177,5 @@ public class ProductSelecter extends JPanel {
 			
 		}
 	}
-	
-	/**
-	 * Classe ausiliare per inserire prodotti nel combo box
-	 * 
-	 * @author Lorenzo
-	 *
-	 */
 
 }
