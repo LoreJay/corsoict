@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class KeyPad extends JPanel implements ActionListener{
 
 	//===========CALCULATOR PANEL============//
@@ -61,7 +62,8 @@ public class KeyPad extends JPanel implements ActionListener{
 	
 	//==========SETTING LAYOUT==============//
 		calc.setLayout(new GridLayout(4,3));
-		text.setPreferredSize(new Dimension(50,100));
+		text.setHorizontalAlignment(JLabel.CENTER);
+		//text.setPreferredSize(new Dimension(50,100));
 		
 		
 	

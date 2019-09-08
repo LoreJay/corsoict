@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import corso.KeyPad;
 
-public class MainKeyPad {
+public class KeyPadDemo {
 	
 	public static void main(String args[]) {
 		JFrame frame = new JFrame();

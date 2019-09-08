@@ -1,5 +1,8 @@
 package corso;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -13,6 +16,8 @@ public class ProductList extends JPanel{
 
 		String[] prodotto = {"mele     5$", "pasta      6$", "carne     4$", "insalata     1$"};
 		JList<String> lista = new JList<String>(prodotto);
+		
+		this.setLayout(new GridLayout(1,1));
 		
 		add(lista);
 	}

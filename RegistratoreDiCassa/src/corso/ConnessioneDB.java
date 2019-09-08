@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 // ConnesioneDB.getConnection()
 public class ConnessioneDB {
+	
 	static private Connection conn = null;
 
 	

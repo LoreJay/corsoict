@@ -83,7 +83,7 @@ public class ProductSelecter extends JPanel {
 			cmb_products.addItem(product);
 		}
 
-		// DEBUG: aggiunge elementi se la lista è vuota
+		// DEBUG: aggiunge elementi se la lista ï¿½ vuota
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		if (productsList.isEmpty()) {
 			for (int i = 0; i < 5; i++) {
@@ -132,10 +132,11 @@ public class ProductSelecter extends JPanel {
 			SampleProduct aux = (SampleProduct) cmb_products.getSelectedItem();
 			
 			String prezzo;
-			if (aux.price != 0)
-				prezzo = "€" + aux.price;
-			else
+			
+			if (aux instanceof DummySampleProduct)
 				prezzo = "-prezzo-";
+			else
+				prezzo = "â‚¬ " + aux.price;
 			
 			lbl_prezzo.setText(prezzo);
 		}
@@ -160,7 +161,7 @@ public class ProductSelecter extends JPanel {
 		
 		@Override
 		public String toString() {
-			return "Nome: " + this.productName + " - Prezzo: " + this.price + " €";
+			return "Nome: " + this.productName + " - Prezzo: " + this.price + " â‚¬";
 		}
 	}
 	
