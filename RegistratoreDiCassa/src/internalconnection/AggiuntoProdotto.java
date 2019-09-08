@@ -5,7 +5,6 @@ import java.util.EventObject;
 @SuppressWarnings("serial")
 public class AggiuntoProdotto extends EventObject {
 
-	@SuppressWarnings("unused")
 	private Product prodottoAggiunto = null;
 	
 	public AggiuntoProdotto(Object source) {

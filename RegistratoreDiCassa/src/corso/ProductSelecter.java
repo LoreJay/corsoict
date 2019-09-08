@@ -118,7 +118,7 @@ public class ProductSelecter extends JPanel {
 	 */
 	
 	public void crealanciaEvento (Product prodottoAggiunto) {
-		AggiuntoProdotto event = new AggiuntoProdotto(prodottoAggiunto);
+		AggiuntoProdotto event = new AggiuntoProdotto(this, prodottoAggiunto);
 		
 		for (InterListener listener : ascoltatori)
 			listener.prodottoAggiunto(event);
@@ -144,6 +144,8 @@ public class ProductSelecter extends JPanel {
 		// TODO: metodo per mandare la selezione al JList
 
 		cmb_products.setSelectedIndex(0);
+		
+		crealanciaEvento(selectedProducts);
 		
 		System.out.println("DEBUGG: evento lanciato");
 		
@@ -173,7 +175,6 @@ public class ProductSelecter extends JPanel {
 			
 			lbl_prezzo.setText(prezzo);
 			
-			crealanciaEvento(aux);
 		}
 	}
 	
