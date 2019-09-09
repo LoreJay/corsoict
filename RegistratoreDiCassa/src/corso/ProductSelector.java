@@ -21,7 +21,7 @@ import internalconnection.Product.DummyProduct;
 import internalconnection.AggiuntoProdotto;
 
 @SuppressWarnings("serial")
-public class ProductSelecter extends JPanel {
+public class ProductSelector extends JPanel {
 
 	// Testo del JButton
 	final static String ADD_BTN = "Aggiungi";
@@ -48,7 +48,7 @@ public class ProductSelecter extends JPanel {
 	 * 
 	 */
 
-	public ProductSelecter(ArrayList<Product> productsList) {
+	public ProductSelector(ArrayList<Product> productsList) {
 
 		
 		// Layout del panel (this)
@@ -94,7 +94,7 @@ public class ProductSelecter extends JPanel {
 	 * Crea il pannello con una combo box con prodotti di prova
 	 */
 
-	public ProductSelecter() {
+	public ProductSelector() {
 		this(emptyList);
 	}
 

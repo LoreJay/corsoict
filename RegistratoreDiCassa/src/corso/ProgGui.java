@@ -25,7 +25,7 @@ public class ProgGui extends JFrame {
 	
 	KeyPad keypad = new KeyPad();
 	ProductList list = new ProductList();
-	ProductSelecter select = new ProductSelecter();
+	ProductSelector select = new ProductSelector();
 	
 	//TableDemo list = new TableDemo();
 	
