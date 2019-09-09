@@ -34,7 +34,7 @@ public class ProductList extends JPanel implements InterListener {
 		table.setFillsViewportHeight(true);
 
 		// Create the scroll pane and add the table to it.
-		scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		// Add the scroll pane to this panel.
 		add(scrollPane);
@@ -70,7 +70,7 @@ public class ProductList extends JPanel implements InterListener {
 			}
 			
 			if (columnIndex == 1) {
-				return "â‚¬ " + data.get(rowIndex).getPrice();
+				return "€ " + data.get(rowIndex).getPrezzo();
 			}
 			
 			return data.get(rowIndex).getName();

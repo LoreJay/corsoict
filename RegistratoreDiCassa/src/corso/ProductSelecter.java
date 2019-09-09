@@ -189,7 +189,7 @@ public class ProductSelecter extends JPanel {
 			if (aux instanceof DummyProduct)
 				prezzo = "-prezzo-";
 			else
-				prezzo = "€ " + aux.getPrice();
+				prezzo = "€ " + aux.getPrezzo();
 			
 			lbl_prezzo.setText(prezzo);
 			

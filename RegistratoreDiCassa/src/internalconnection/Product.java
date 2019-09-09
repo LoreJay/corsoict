@@ -5,29 +5,41 @@ public class Product {
 
 	final static String SELECT_STRING = "--- seleziona un prodotto ---";
 
-	private String productName;
-	private float price;
+	private String codice;
+	private String nome;
+	private float prezzo;
 
 	public Product(String nome, float prezzo) {
-		this.productName = nome;
-		this.price = prezzo;
+		this.nome = nome;
+		this.prezzo = prezzo;
+		this.codice = "ZZZ";
 	}
 
+	public Product(String codice, String nome, float prezzo) {
+		this.codice = codice;
+		this.nome = nome;
+		this.prezzo = prezzo;
+	}
+	
 	public Product() {
 		//DEFAULT: serve per le sottoclassi
 	}
 
-	public float getPrice() {
-		return price;
+	public float getPrezzo() {
+		return prezzo;
 	}
 	
 	public String getName() {
-		return productName;
+		return nome;
+	}
+	
+	public String getcodice() {
+		return codice;
 	}
 
 	@Override
 	public String toString() {
-		return "Nome: " + this.productName;
+		return "[Codice] " + this.codice + " [Nome] " + this.nome;
 	}
 
 	public static class DummyProduct extends Product {
