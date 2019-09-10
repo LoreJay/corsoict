@@ -4,16 +4,20 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import internalconnection.Product;
+
 @SuppressWarnings("serial")
 public class ProgGui extends JFrame {
 
 	public static void main (String[] args) {
-		 //Schedule a job for the event-dispatching thread:
+		//Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -22,14 +26,15 @@ public class ProgGui extends JFrame {
         });
     }
 	
+	//Variabili
+	int codiceScontrino; //codice dello scontrino attualmente in uso
 	
+	
+	//Widgets
 	KeyPad keypad = new KeyPad();
 	ProductList list = new ProductList();
 	ProductSelector select = new ProductSelector();
-	
-	//TableDemo list = new TableDemo();
-	
-	JLabel tot = new JLabel("TOTALE €");
+	JLabel tot = new JLabel("TOTALE €");	
 	
 	ProgGui(){
 		
@@ -52,6 +57,7 @@ public class ProgGui extends JFrame {
 		
 		
 		// ProductSelecter
+		
 		constr = new GridBagConstraints();
 		constr.gridx = 0;
 		constr.gridy = 1;
@@ -76,19 +82,6 @@ public class ProgGui extends JFrame {
 		constr = new GridBagConstraints();
 		JButton btn_print = new JButton("Print");
 		
-		/*
-		JPanel pnl_aux = new JPanel();
-		pnl_aux.setLayout(new GridBagLayout());
-		GridBagConstraints constr_aux = new GridBagConstraints();
-		System.out.println(btn_print.getPreferredSize());
-		System.out.println(btn_print.getSize());
-		btn_print.setPreferredSize(new Dimension(50, 50));
-		btn_print.setSize(new Dimension(50,50));
-		
-		
-		pnl_aux.add(btn_print,constr_aux);
-		 */
-		
 		constr.fill = GridBagConstraints.NONE;
 		constr.gridx = 1;
 		constr.gridy = 2;
@@ -109,10 +102,14 @@ public class ProgGui extends JFrame {
 		constr.weighty = 1;
 		list.setOpaque(true);
 		
+		// Database
+		this.aggiungiProdottiSelector();
+		this.creaScontrino();
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(list, constr);
-		
 		this.setVisible(true);
-		
+		this.pack();
 	}
 	
 
@@ -128,4 +125,57 @@ public class ProgGui extends JFrame {
 		frame.pack();
 	}
 
+	/**
+	 * Crea uno scontrino vuoto a cui verranno aggiunti i prodotti
+	 */
+	
+	private void creaScontrino () {
+		
+		ConnessioneDB database = null;
+		
+		try {
+			database = new ConnessioneDB();
+			codiceScontrino = database.creaScontrino(Settings.IVA);
+		} catch (SQLException sqle) {
+			System.out.println("Errore di connessione al database");
+			sqle.printStackTrace();
+		} finally {
+			try {
+				database.close();
+			} catch (SQLException e) {
+				System.out.println("ERRORE nella chiusura del database!");
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	/**
+	 * Prende dal database la lista dei prodotti e la carica nella combo box di ProductSelector
+	 */
+	
+	private void aggiungiProdottiSelector () {
+		
+		ConnessioneDB database = null;
+		ArrayList<Product> prodotti = new ArrayList<>();
+		
+		try {
+			database = new ConnessioneDB();
+			prodotti = database.listaProdotti();
+		} catch (SQLException sqle) {
+			System.out.println("Errore di connessione al database");
+			sqle.printStackTrace();
+		} finally {
+			try {
+				database.close();
+			} catch (SQLException e) {
+				System.out.println("ERRORE nella chiusura del database!");
+				e.printStackTrace();
+			}
+		}
+		
+		select.addProducts(prodotti);
+		
+	}
+	
 }

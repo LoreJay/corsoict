@@ -2,7 +2,6 @@ package corso;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,9 +32,9 @@ public class ProductSelector extends JPanel {
 	// Lista vuota: per il costruttore senza parametri
 	final static ArrayList<Product> emptyList = new ArrayList<>();
 
-	static JComboBox<Product> cmb_products = new JComboBox<>();
-	static JButton btn_add = new JButton(ADD_BTN);
-	static JLabel lbl_prezzo = new JLabel();
+	private JComboBox<Product> cmb_products = new JComboBox<>();
+	private JButton btn_add = new JButton(ADD_BTN);
+	private JLabel lbl_prezzo = new JLabel();
 	
 	// Lista ascoltatori
 	private Vector<InterListener> ascoltatori = new Vector<>();
@@ -49,7 +48,6 @@ public class ProductSelector extends JPanel {
 	 */
 
 	public ProductSelector(ArrayList<Product> productsList) {
-
 		
 		// Layout del panel (this)
 		GridBagLayout layout = new GridBagLayout();
@@ -106,18 +104,21 @@ public class ProductSelector extends JPanel {
 
 	public void addProducts(ArrayList<Product> productsList) {
 
-		cmb_products.addItem(SELECT);
+		if (cmb_products.getItemCount() == 0)
+			cmb_products.addItem(SELECT);
 		for (Product product : productsList) {
 			cmb_products.addItem(product);
 		}
 
 		// DEBUG: aggiunge elementi se la lista � vuota
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		/*
 		if (productsList.isEmpty()) {
 			for (int i = 0; i < 5; i++) {
 				cmb_products.addItem(new Product("Prodotto #" + i, i*10));
 			}
 		}
+		*/
 		// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<		
 	}
 	/**

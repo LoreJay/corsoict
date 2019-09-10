@@ -2,6 +2,7 @@ package corso;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -16,11 +17,11 @@ import internalconnection.Product;
 @SuppressWarnings("serial")
 public class ProductList extends JPanel implements InterListener {
 
-	static MyTableModel myModel;
-	static JTable table;
-	static JScrollPane scrollPane;
-	static Vector<Product> data = new Vector<>();
-	static boolean isEmpty = true;
+	private MyTableModel myModel;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private Vector<Product> data = new Vector<>();
+	private boolean isEmpty = true;
 	
 	public ProductList() {
 		
@@ -45,7 +46,7 @@ public class ProductList extends JPanel implements InterListener {
 
 	private class MyTableModel extends AbstractTableModel {
 		
-		String[] columnNames = {"Nome", "Prezzo" };
+		String[] columnNames = {"#", "Nome", "Prezzo" };
 
 		@Override
 		public String getColumnName(int col) {
@@ -68,6 +69,9 @@ public class ProductList extends JPanel implements InterListener {
 			if (isEmpty) {
 				return null;
 			}
+			
+			//TODO
+			switch (columnIndex) {
 			
 			if (columnIndex == 1) {
 				return "€ " + data.get(rowIndex).getPrezzo();
@@ -93,12 +97,26 @@ public class ProductList extends JPanel implements InterListener {
 		
 	}
 
+	/**
+	 * Aggiunge un prodtto alla lista
+	 * 
+	 * @param prodotto
+	 */
+	
 	public void aggiungiProdotto(Product prodotto) {
 		
-		
-		data.add(prodotto);
-		
+		data.add(prodotto);	
 		myModel.fireTableRowsInserted(0, data.size());
+	}
+	
+	/**
+	 * Getter: restituisce l'elenco dei prodotti presenti nella lista
+	 * 
+	 * @return
+	 */
+	
+	public Vector<Product> getProdotti()	{
+		return data;
 	}
 
 	@Override
