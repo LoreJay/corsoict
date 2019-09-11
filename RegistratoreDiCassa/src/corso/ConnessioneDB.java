@@ -15,16 +15,19 @@ public class ConnessioneDB {
 	static private Connection conn = null;
 	private PreparedStatement stmt_getProduct = null;
 	private PreparedStatement stmt_addProduct = null;
-	private PreparedStatement stmt_editQta = null;
+	private PreparedStatement stmt_editQtaPrezzo = null;
 	private PreparedStatement stmt_creaScontrino = null;
 	private PreparedStatement stmt_getCodice = null;
 	private PreparedStatement stmt_editTotale = null;
-	private PreparedStatement[] allStmt = {stmt_getProduct, stmt_addProduct, stmt_editQta, stmt_creaScontrino, stmt_getCodice, stmt_editTotale}; 
+	private PreparedStatement stmt_getQta = null;
+	private PreparedStatement[] allStmt = {stmt_getProduct, stmt_addProduct, stmt_editQtaPrezzo, stmt_creaScontrino, stmt_getCodice, stmt_editTotale, stmt_getQta}; 
 	
 	//Prodotti
 	private final static String QUERY_GET_PRD_LIST = "SELECT * FROM prodotti";
 	
 	//Prodotti_scontrini
+	private final static String QUERY_GET_QTA = "";
+	//private final static String QUERY_GET_PREZZO = "";
 	private final static String QUERY_ADD_PRODUCT = "INSERT INTO prodotti_scontrini VALUES (?, ?, ?, ?)";
 	private final static String QUERY_UPDATE_QTAPREZZO = "UPDATE prodotti_scontrini SET qta = (?), prezzo_applicato = (?) WHERE Codice_prodotto = (?)";
 	
@@ -55,7 +58,7 @@ public class ConnessioneDB {
 		
 		stmt_getProduct = conn.prepareStatement(QUERY_GET_PRD_LIST);
 		stmt_addProduct = conn.prepareStatement(QUERY_ADD_PRODUCT);
-		stmt_editQta = conn.prepareStatement(QUERY_UPDATE_QTAPREZZO);
+		stmt_editQtaPrezzo = conn.prepareStatement(QUERY_UPDATE_QTAPREZZO);
 		stmt_creaScontrino = conn.prepareStatement(QUERY_NEW_SCONTRINO);
 		stmt_getCodice = conn.prepareStatement(QUERY_GET_ID_SCONTRINO);
 		stmt_editTotale = conn.prepareStatement(QUERY_EDT_TOT);
@@ -114,6 +117,16 @@ public class ConnessioneDB {
 	}
 	
 	/**
+	 * Prende la quantià del prodotto
+	 * @return
+	 */
+	
+	public int getQta () {
+		return 0;
+	}
+	
+	
+	/**
 	 * Aggiorna la quantità del prodotto scelto
 	 * 
 	 * @param codice del prodotto
@@ -124,11 +137,11 @@ public class ConnessioneDB {
 	
 	public void aggiornaQta (String codice, int newQta, float newPrezzo) throws SQLException {
 		
-		this.stmt_editQta.setInt(1, newQta);
-		this.stmt_editQta.setFloat(2, newPrezzo);
-		this.stmt_editQta.setString(3, codice);
+		this.stmt_editQtaPrezzo.setInt(1, newQta);
+		this.stmt_editQtaPrezzo.setFloat(2, newPrezzo);
+		this.stmt_editQtaPrezzo.setString(3, codice);
 		
-		this.stmt_editQta.executeUpdate();
+		this.stmt_editQtaPrezzo.executeUpdate();
 	}
 	
 	/**
