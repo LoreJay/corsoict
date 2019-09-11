@@ -16,20 +16,25 @@ public class ProductListDemo implements ActionListener {
 
 	static JFrame frame = new JFrame("Lista dei prodotti");
 	static ProductList list = new ProductList();
-
+	
 	public static void main(String[] args) {
-		JButton btn = new JButton("DEBUGG");
-		frame.setLayout(new GridLayout(1,2));
-		
-		btn.addActionListener(new ProductListDemo());
-		frame.add(btn);
+		frame.setLayout(new GridLayout(1,3));
 
+		JButton btn_add = new JButton("DEBUG>> add");
+		btn_add.addActionListener(new ProductListDemo());
+		btn_add.setActionCommand("ADD");
+		frame.add(btn_add);
+
+		JButton btn_update = new JButton("DEBUG>> update");
+		btn_update.addActionListener(new ProductListDemo());
+		frame.add(btn_update);
+		
 		frame.add(list);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		frame.setPreferredSize(new Dimension(300,200));
+		frame.setPreferredSize(new Dimension(500,300));
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack(); // Ridimensiona il frame
@@ -37,8 +42,13 @@ public class ProductListDemo implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		list.prodottoAggiunto(new AggiuntoProdotto(list, new Product("provaBottoneOK", 10f))); // DEBUGG
-		//frame.pack();
+		
+		if (e.getActionCommand().equals("ADD")) {
+			list.aggiungiProdotto(new Product("Nome", 10f));
+			return;
+		}
+		
+		list.updateProductIfPresent(new Product ("Nome", 10f));
 	}
 
 }

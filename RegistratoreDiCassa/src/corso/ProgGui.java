@@ -11,10 +11,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import internalconnection.AggiuntoProdotto;
+import internalconnection.InterListener;
 import internalconnection.Product;
 
 @SuppressWarnings("serial")
-public class ProgGui extends JFrame {
+public class ProgGui extends JFrame implements InterListener {
 
 	public static void main (String[] args) {
 		//Schedule a job for the event-dispatching thread:
@@ -39,7 +41,7 @@ public class ProgGui extends JFrame {
 	ProgGui(){
 		
 		// Connessioni fra i widget
-		select.addInternalListener(list); //aggiungo list agli ascoltatori di select		
+		select.addInternalListener(this); //aggiungo list agli ascoltatori di select		
 		
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints constr = new GridBagConstraints();
@@ -176,6 +178,17 @@ public class ProgGui extends JFrame {
 		
 		select.addProducts(prodotti);
 		
+	}
+
+
+
+	@Override
+	public void prodottoAggiunto(AggiuntoProdotto event) {
+
+		Product prodottoDaAggiungere = event.getProdottoAggiunto();
+		
+		if (list.updateProductIfPresent(prodottoDaAggiungere) == false)
+			list.aggiungiProdotto(prodottoDaAggiungere);
 	}
 	
 }

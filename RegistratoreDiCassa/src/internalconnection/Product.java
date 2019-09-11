@@ -8,23 +8,39 @@ public class Product {
 	private String codice;
 	private String nome;
 	private float prezzo;
+	private float prezzoApplicato;
+	private int qta;
 
 	public Product(String nome, float prezzo) {
 		this.nome = nome;
 		this.prezzo = prezzo;
+		this.prezzoApplicato = prezzo;
 		this.codice = "ZZZ";
+		this.qta = 1;
 	}
 
 	public Product(String codice, String nome, float prezzo) {
 		this.codice = codice;
 		this.nome = nome;
 		this.prezzo = prezzo;
+		this.prezzoApplicato = prezzo;
+		this.qta = 1;
 	}
 	
 	public Product() {
 		//DEFAULT: serve per le sottoclassi
 	}
 
+	public void updateQtaAndPrezzo() {
+		this.qta++;
+		this.prezzoApplicato = prezzo * qta;
+		
+	}
+	
+	public float getPrezzoApp() {
+		return prezzoApplicato;
+	}
+	
 	public float getPrezzo() {
 		return prezzo;
 	}
@@ -37,6 +53,11 @@ public class Product {
 		return codice;
 	}
 
+	public int getQta() {
+		return qta;
+	}
+
+	
 	@Override
 	public String toString() {
 		return "[Codice] " + this.codice + " [Nome] " + this.nome;

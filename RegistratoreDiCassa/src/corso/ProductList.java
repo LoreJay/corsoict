@@ -15,7 +15,7 @@ import internalconnection.InterListener;
 import internalconnection.Product;
 
 @SuppressWarnings("serial")
-public class ProductList extends JPanel implements InterListener {
+public class ProductList extends JPanel {
 
 	private MyTableModel myModel;
 	private JTable table;
@@ -28,7 +28,7 @@ public class ProductList extends JPanel implements InterListener {
 		super(new GridLayout(1, 0));
 
 		myModel = new MyTableModel();
-		table = new JTable(myModel);
+		table = new JTable(getMyModel());
 		table.setRowSelectionAllowed(false);
 		
 		table.setPreferredScrollableViewportSize(new Dimension(250, 70));
@@ -64,7 +64,7 @@ public class ProductList extends JPanel implements InterListener {
 		}
 
 		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
+		public Object getValueAt (int rowIndex, int columnIndex) {
 			
 			if (isEmpty) {
 				return null;
@@ -72,12 +72,12 @@ public class ProductList extends JPanel implements InterListener {
 			
 			//TODO
 			switch (columnIndex) {
-			
-			if (columnIndex == 1) {
-				return "€ " + data.get(rowIndex).getPrezzo();
+			case 0: return data.get(rowIndex).getQta();
+			case 1: return data.get(rowIndex).getName();
+			case 2: return data.get(rowIndex).getPrezzoApp();
 			}
 			
-			return data.get(rowIndex).getName();
+			return null;
 		}
 
 		@Override
@@ -98,15 +98,34 @@ public class ProductList extends JPanel implements InterListener {
 	}
 
 	/**
-	 * Aggiunge un prodtto alla lista
+	 * Aggiunge un prodtto alla lista 
 	 * 
 	 * @param prodotto
 	 */
 	
-	public void aggiungiProdotto(Product prodotto) {
+	public void aggiungiProdotto (Product prodotto) {
 		
 		data.add(prodotto);	
 		myModel.fireTableRowsInserted(0, data.size());
+
+	}
+	
+	/**
+	 * Incrementa 
+	 * @param prodotto
+	 */
+	
+	public boolean updateProductIfPresent (Product prodotto) {
+		
+		for (Product aux : data) {
+			if (prodotto.getcodice().equals(aux.getcodice())) {
+				aux.updateQtaAndPrezzo();
+				myModel.fireTableRowsInserted(0, data.size());
+				return true;
+			}
+		}		
+		
+		return false;
 	}
 	
 	/**
@@ -119,19 +138,11 @@ public class ProductList extends JPanel implements InterListener {
 		return data;
 	}
 
-	@Override
-	public void prodottoAggiunto(AggiuntoProdotto event) {
-
-		Product prodottoDaAggiungere = event.getProdottoAggiunto();
-		
-		aggiungiProdotto(prodottoDaAggiungere);
-		
-		/*
-		//DEBUG >>>>
-		System.out.println("Evento!");
-		for (Object prd : data)
-			System.out.println(prd);
-		*/
+	public MyTableModel getMyModel() {
+		return myModel;
 	}
 	
+	public Vector<Product> getData(){
+		return data;
+	}
 }
