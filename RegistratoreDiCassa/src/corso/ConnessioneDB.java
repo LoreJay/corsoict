@@ -21,9 +21,15 @@ public class ConnessioneDB {
 	private PreparedStatement stmt_editTotale = null;
 	private PreparedStatement[] allStmt = {stmt_getProduct, stmt_addProduct, stmt_editQta, stmt_creaScontrino, stmt_getCodice, stmt_editTotale}; 
 	
-	private final static String QUERY_GET_PRODUCT = "SELECT * FROM prodotti";
+	//Prodotti
+	private final static String QUERY_GET_PRD_LIST = "SELECT * FROM prodotti";
+	
+	//Prodotti_scontrini
 	private final static String QUERY_ADD_PRODUCT = "INSERT INTO prodotti_scontrini VALUES (?, ?, ?, ?)";
-	private final static String QUERY_EDT_QTA = "UPDATE prodotti_scontrini SET qta = (?) WHERE Codice_prodotto = (?)";
+	private final static String QUERY_UPDATE_QTAPREZZO = "UPDATE prodotti_scontrini SET qta = (?), prezzo_applicato = (?) WHERE Codice_prodotto = (?)";
+	
+	
+	//Scontrini
 	private final static String QUERY_NEW_SCONTRINO = "INSERT INTO scontrini (iva) VALUES (?)";
 	private final static String QUERY_GET_ID_SCONTRINO = "SELECT id FROM scontrini ORDER BY DataOra DESC LIMIT 1";
 	private final static String QUERY_EDT_TOT = "UPDATE scontrini SET totale = (?) WHERE ID = (?)";
@@ -47,9 +53,9 @@ public class ConnessioneDB {
 	
 	void prepareStatements() throws SQLException {
 		
-		stmt_getProduct = conn.prepareStatement(QUERY_GET_PRODUCT);
+		stmt_getProduct = conn.prepareStatement(QUERY_GET_PRD_LIST);
 		stmt_addProduct = conn.prepareStatement(QUERY_ADD_PRODUCT);
-		stmt_editQta = conn.prepareStatement(QUERY_EDT_QTA);
+		stmt_editQta = conn.prepareStatement(QUERY_UPDATE_QTAPREZZO);
 		stmt_creaScontrino = conn.prepareStatement(QUERY_NEW_SCONTRINO);
 		stmt_getCodice = conn.prepareStatement(QUERY_GET_ID_SCONTRINO);
 		stmt_editTotale = conn.prepareStatement(QUERY_EDT_TOT);
@@ -116,10 +122,11 @@ public class ConnessioneDB {
 	 */
 	
 	
-	public void aggiornaQta (String codice, int newQta) throws SQLException {
+	public void aggiornaQta (String codice, int newQta, float newPrezzo) throws SQLException {
 		
 		this.stmt_editQta.setInt(1, newQta);
-		this.stmt_editQta.setString(2, codice);
+		this.stmt_editQta.setFloat(2, newPrezzo);
+		this.stmt_editQta.setString(3, codice);
 		
 		this.stmt_editQta.executeUpdate();
 	}

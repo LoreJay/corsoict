@@ -177,10 +177,7 @@ public class ProgGui extends JFrame implements InterListener {
 		}
 		
 		select.addProducts(prodotti);
-		
 	}
-
-
 
 	@Override
 	public void prodottoAggiunto(AggiuntoProdotto event) {
