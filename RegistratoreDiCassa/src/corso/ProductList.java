@@ -20,7 +20,6 @@ public class ProductList extends JPanel {
 	private MyTableModel myModel;
 	private JTable table;
 	private JScrollPane scrollPane;
-	private Vector<Product> data = new Vector<>();
 	private boolean isEmpty = true;
 	
 	public ProductList() {
@@ -46,8 +45,22 @@ public class ProductList extends JPanel {
 
 	private class MyTableModel extends AbstractTableModel {
 		
+		MyTableModel () {
+			super();
+			this.data = new Vector<Product>();
+		}
+		
 		String[] columnNames = {"#", "Nome", "Prezzo" };
+		private Vector<Product> data = new Vector<>();
 
+		public void setData(Vector<Product> data) {
+			this.data = data;
+		}
+		
+		public Vector<Product> getData(){
+			return this.data;
+		}
+		
 		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
@@ -105,8 +118,8 @@ public class ProductList extends JPanel {
 	
 	public void aggiungiProdotto (Product prodotto) {
 		
-		data.add(prodotto);	
-		myModel.fireTableRowsInserted(0, data.size());
+		myModel.getData().add(prodotto);	
+		myModel.fireTableRowsInserted(0, myModel.getData().size());
 
 	}
 	
@@ -117,10 +130,10 @@ public class ProductList extends JPanel {
 	
 	public boolean updateProductIfPresent (Product prodotto) {
 		
-		for (Product aux : data) {
+		for (Product aux : myModel.getData()) {
 			if (prodotto.getcodice().equals(aux.getcodice())) {
 				aux.updateQtaAndPrezzo();
-				myModel.fireTableRowsInserted(0, data.size());
+				myModel.fireTableRowsInserted(0, myModel.getData().size());
 				return true;
 			}
 		}		
@@ -134,15 +147,9 @@ public class ProductList extends JPanel {
 	 * @return
 	 */
 	
-	public Vector<Product> getProdotti()	{
-		return data;
-	}
-
 	public MyTableModel getMyModel() {
 		return myModel;
 	}
 	
-	public Vector<Product> getData(){
-		return data;
-	}
+	
 }
