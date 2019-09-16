@@ -25,8 +25,16 @@ public class ConnessioneDB {
 	private PreparedStatement stmt_getCodice = null;
 	private PreparedStatement stmt_editTotale = null;
 
-	private PreparedStatement[] allStmt = { stmt_getProductList, stmt_addProduct, stmt_editQtaPrezzo, stmt_creaScontrino,
-			stmt_getQtaProduct, stmt_getCodice, stmt_editTotale, stmt_getQtaProduct, stmt_getPrezzo };
+	private PreparedStatement[] allStmt = {
+			stmt_getProductList, 
+			stmt_addProduct, 
+			stmt_editQtaPrezzo, 
+			stmt_creaScontrino,
+			stmt_getQtaProduct, 
+			stmt_getCodice, 
+			stmt_editTotale, 
+			stmt_getQtaProduct, 
+			stmt_getPrezzo };
 
 	// Prodotti
 	private final static String QUERY_GET_PRD_LIST = "SELECT * FROM prodotti";
