@@ -56,9 +56,18 @@ public class Model {
 	private final static String QUERY_GET_ID_SCONTRINO = "SELECT id FROM scontrini ORDER BY DataOra DESC LIMIT 1";
 	private final static String QUERY_EDT_TOT = "UPDATE scontrini SET totale = (?) WHERE ID = (?)";
 
-	void prepareStatements() throws SQLException {
-
-		conn = ConnessioneDB.getConnection();
+	public Model() {
+		try {
+			conn = ConnessioneDB.getConnection();
+			prepareStatements();
+		} catch (SQLException e) {
+			System.out.println("ERRORE SQL nella creazione di Model");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void prepareStatements() throws SQLException {
 		
 		stmt_getProductList = conn.prepareStatement(QUERY_GET_PRD_LIST);
 
@@ -72,7 +81,7 @@ public class Model {
 		stmt_editTotale = conn.prepareStatement(QUERY_EDT_TOT);
 	}
 
-	void close() throws SQLException {
+	public void close() throws SQLException {
 
 		for (int i = 0; i < allStmt.length; i++) {
 			if (allStmt[i] != null)
@@ -85,136 +94,20 @@ public class Model {
 		}
 	}
 
-	/**
-	 * Prende la quantià del prodotto
-	 * 
-	 * @return
-	 * @throws SQLException 
-	 */
 
-	public int getQta(String codiceProdotto) throws SQLException {
-		int qta = 0;
+	
+	@SuppressWarnings("serial")
+	class TableProdotto extends Vector<Product>{
 		
-		stmt_getPrezzo.setString(1, codiceProdotto);
-		
-		try (ResultSet rs = this.stmt_getProductList.executeQuery()) {
-			while (rs.next()) {
-				qta = rs.getInt("qta");
+		public TableProdotto() {
+			try {
+				for (Product prd : listaProdotti())
+					this.add(prd);
+			} catch (SQLException e) {
+				System.out.println("ERRORE SQL nella creazione di TableProdotto");
+				e.printStackTrace();
 			}
-		} catch (SQLException sqle) {
-			System.out.println("Errore nelle QUERY_GET_PRODUCT");
-			sqle.printStackTrace();
 		}
-
-		return qta;
-	}
-
-	/**
-	 * Prendere il prezzo del prodotto
-	 * @return
-	 * @throws SQLException 
-	 */
-	
-	public float getPrezzo(String codiceProdotto) throws SQLException {
-		float prezzo = 0;
-		
-		stmt_getPrezzo.setString(1, codiceProdotto);
-		
-		try (ResultSet rs = this.stmt_getProductList.executeQuery()) {
-			while (rs.next()) {
-				prezzo = rs.getInt("prezzo");
-			}
-		} catch (SQLException sqle) {
-			System.out.println("Errore nelle QUERY_GET_PRODUCT");
-			sqle.printStackTrace();
-		}
-
-		return prezzo;
-	}
-	
-	
-	/**
-	 * Aggiorna la quantità del prodotto scelto
-	 * 
-	 * @param codice del prodotto
-	 * @param newQta nuova quantità
-	 * @throws SQLException
-	 */
-
-	public void aggiornaQta(String codice, int newQta, float newPrezzo) throws SQLException {
-
-		this.stmt_editQtaPrezzo.setInt(1, newQta);
-		this.stmt_editQtaPrezzo.setFloat(2, newPrezzo);
-		this.stmt_editQtaPrezzo.setString(3, codice);
-
-		this.stmt_editQtaPrezzo.executeUpdate();
-	}
-
-	/**
-	 * Crea un istanza di scontrino nella tabella scontrini
-	 * 
-	 * @param iva
-	 * @throws SQLException
-	 * @return codice dello scontrino appena creato
-	 */
-
-	public int creaScontrino(float iva) throws SQLException {
-
-		this.stmt_creaScontrino.setFloat(1, iva);
-
-		this.stmt_creaScontrino.executeUpdate();
-
-		int cod = 0;
-
-		// Cerca il codice dello scontrino appena creato
-		try (ResultSet rs = this.stmt_getCodice.executeQuery()) {
-			cod = rs.getInt(1);
-		} catch (SQLException sqle) {
-			//
-		}
-
-		return cod;
-	}
-	
-	/**
-	 * 
-	 */
-	
-	public int getId() {
-		int id = 0;
-		
-		try (ResultSet rs = this.stmt_getCodice.executeQuery()) {
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
-		} catch (SQLException sqle) {
-			System.out.println("Errore nelle QUERY_GET_PRODUCT");
-			sqle.printStackTrace();
-		}
-		
-		return id;
-	}
-	
-
-	/**
-	 * Aggiorna il conto totale dello scontrino selezionato
-	 * 
-	 * @param prezzoNuovo
-	 * @param idScontrino
-	 * @throws SQLException
-	 */
-
-	public void aggionraTot(float prezzoNuovo, int idScontrino) throws SQLException {
-
-		this.stmt_editTotale.setFloat(1, prezzoNuovo);
-		this.stmt_editTotale.setInt(2, idScontrino);
-
-		this.stmt_editTotale.executeUpdate();
-	}
-
-	
-	class Prodotto {
-		Vector<Product> table_prodotto = new Vector<>();
 		
 		/**
 		 * Ottieni una ArrayList di Product presentei nel database
@@ -259,10 +152,132 @@ public class Model {
 
 			stmt_addProduct.executeUpdate();
 		}
+		
+
+		/**
+		 * Prende la quantià del prodotto
+		 * 
+		 * @return
+		 * @throws SQLException 
+		 */
+
+		public int getQta(String codiceProdotto) throws SQLException {
+			int qta = 0;
+			
+			stmt_getPrezzo.setString(1, codiceProdotto);
+			
+			try (ResultSet rs = stmt_getProductList.executeQuery()) {
+				while (rs.next()) {
+					qta = rs.getInt("qta");
+				}
+			} catch (SQLException sqle) {
+				System.out.println("Errore nelle QUERY_GET_PRODUCT");
+				sqle.printStackTrace();
+			}
+
+			return qta;
+		}
+
+		/**
+		 * Prendere il prezzo del prodotto
+		 * @return
+		 * @throws SQLException 
+		 */
+		
+		public float getPrezzo(String codiceProdotto) throws SQLException {
+			float prezzo = 0;
+			
+			stmt_getPrezzo.setString(1, codiceProdotto);
+			
+			try (ResultSet rs = stmt_getProductList.executeQuery()) {
+				while (rs.next()) {
+					prezzo = rs.getInt("prezzo");
+				}
+			} catch (SQLException sqle) {
+				System.out.println("Errore nelle QUERY_GET_PRODUCT");
+				sqle.printStackTrace();
+			}
+
+			return prezzo;
+		}
+		
+		
+		/**
+		 * Aggiorna la quantità del prodotto scelto
+		 * 
+		 * @param codice del prodotto
+		 * @param newQta nuova quantità
+		 * @throws SQLException
+		 */
+
+		public void aggiornaQta(String codice, int newQta, float newPrezzo) throws SQLException {
+
+			stmt_editQtaPrezzo.setInt(1, newQta);
+			stmt_editQtaPrezzo.setFloat(2, newPrezzo);
+			stmt_editQtaPrezzo.setString(3, codice);
+
+			stmt_editQtaPrezzo.executeUpdate();
+		}
 	}
 	
 	class Scontrino {
 		Vector<Product> table_scontrini = new Vector<>();
+		
+		/**
+		 * Crea un istanza di scontrino nella tabella scontrini e ne restituisce il suo id.
+		 * 
+		 * @param iva
+		 * @throws SQLException
+		 * @return codice dello scontrino appena creato
+		 */
+
+		public int creaScontrino(float iva) throws SQLException {
+
+			stmt_creaScontrino.setFloat(1, iva);
+			stmt_creaScontrino.executeUpdate();
+
+			int cod = getId();
+			
+			return cod;
+		}
+		
+		
+		/**
+		 * Restituisce l'id dell'utlimo scontrino creato
+		 */
+		
+		private int getId() {
+			int id = 0;
+			
+			try (ResultSet rs = stmt_getCodice.executeQuery()) {
+				while (rs.next()) {
+					id = rs.getInt("id");
+				}
+			} catch (SQLException sqle) {
+				System.out.println("Errore nelle QUERY_GET_PRODUCT");
+				sqle.printStackTrace();
+			}
+			
+			return id;
+		}
+		
+
+		/**
+		 * Aggiorna il conto totale dello scontrino selezionato
+		 * 
+		 * @param prezzoNuovo
+		 * @param idScontrino
+		 * @throws SQLException
+		 */
+
+		public void aggionraTot(float prezzoNuovo, int idScontrino) throws SQLException {
+
+			stmt_editTotale.setFloat(1, prezzoNuovo);
+			stmt_editTotale.setInt(2, idScontrino);
+
+			stmt_editTotale.executeUpdate();
+		}
+
 	}
 	
 }
