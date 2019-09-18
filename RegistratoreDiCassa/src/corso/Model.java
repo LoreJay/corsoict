@@ -99,7 +99,13 @@ public class Model {
 	@SuppressWarnings("serial")
 	class TableProdotto extends Vector<Product>{
 		
+		/**
+		 * Al momento della creazione TableProdotto conterrà tutti gli elementi presenti nella
+		 * tabella pordotto
+		 */
+		
 		public TableProdotto() {
+			super();
 			try {
 				for (Product prd : listaProdotti())
 					this.add(prd);
@@ -134,15 +140,40 @@ public class Model {
 		}	
 	}
 	
-	class ProdottoScontrino {
-		Vector<Product> table_prodScontrini = new Vector<>();
+	@SuppressWarnings("serial")
+	class TableProdottoScontrino extends Vector<Product> {
+		
+		private int codScontrino = 0;
+		
 		
 		/**
-		 * Aggiungi prodotto a prodotti_scontrini
+		 * Al momento della creazione è vuota
+		 */
+		
+		TableProdottoScontrino (){
+			super();
+		}
+		
+		/**
 		 * 
+		 * @param prodotto
+		 */
+		
+		public void aggiungiProdotto (Product prodotto)  {
+			try {
+				aggiungiProdottoDB (this.codScontrino, prodotto.codice, prodotto.qta, prodotto.prezzo);
+				add(prodotto);
+			} catch (SQLException e) {
+				System.out.println("ERRORE SQL nell'aggiunta del prodotto!");
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * Aggiungi prodotto a prodotti_scontrini 
 		 */
 
-		public void aggiungiProdotto(int codScontrino, String codiceProdotto, int qta, float prezzo_applicato)
+		public void aggiungiProdottoDB(int codScontrino, String codiceProdotto, int qta, float prezzo_applicato)
 				throws SQLException {
 
 			stmt_addProduct.setInt(1, codScontrino);
@@ -152,7 +183,6 @@ public class Model {
 
 			stmt_addProduct.executeUpdate();
 		}
-		
 
 		/**
 		 * Prende la quantià del prodotto
@@ -218,10 +248,19 @@ public class Model {
 
 			stmt_editQtaPrezzo.executeUpdate();
 		}
+		
+		public void setCodScontrino (int codice) {
+			this.codScontrino = codice;
+		}
+		
 	}
 	
-	class Scontrino {
-		Vector<Product> table_scontrini = new Vector<>();
+	class TableScontrino extends Vector<String> {
+		
+		TableScontrino(){
+			super();
+		}
+		
 		
 		/**
 		 * Crea un istanza di scontrino nella tabella scontrini e ne restituisce il suo id.
@@ -276,6 +315,82 @@ public class Model {
 			stmt_editTotale.setInt(2, idScontrino);
 
 			stmt_editTotale.executeUpdate();
+		}
+
+	}
+	
+	public static class Product {
+
+		final static String SELECT_STRING = "--- seleziona un prodotto ---";
+
+		private String codice;
+		private String nome;
+		private float prezzo;
+		private float prezzoApplicato;
+		private int qta;
+
+		public Product(String nome, float prezzo) {
+			this.nome = nome;
+			this.prezzo = prezzo;
+			this.prezzoApplicato = prezzo;
+			this.codice = "ZZZ";
+			this.qta = 1;
+		}
+
+		public Product(String codice, String nome, float prezzo) {
+			this.codice = codice;
+			this.nome = nome;
+			this.prezzo = prezzo;
+			this.prezzoApplicato = prezzo;
+			this.qta = 1;
+		}
+		
+		public Product() {
+			//DEFAULT: serve per le sottoclassi
+		}
+
+		public void updateQtaAndPrezzo() {
+			this.qta++;
+			this.prezzoApplicato = prezzo * qta;
+			
+		}
+		
+		public float getPrezzoApp() {
+			return prezzoApplicato;
+		}
+		
+		public float getPrezzo() {
+			return prezzo;
+		}
+		
+		public String getName() {
+			return nome;
+		}
+		
+		public String getcodice() {
+			return codice;
+		}
+
+		public int getQta() {
+			return qta;
+		}
+
+		
+		@Override
+		public String toString() {
+			return "[Codice] " + this.codice + " [Nome] " + this.nome;
+		}
+
+		public static class DummyProduct extends Product {
+
+			public DummyProduct() {
+				super(SELECT_STRING, 0f);
+			}
+
+			@Override
+			public String toString() {
+				return SELECT_STRING;
+			}
 		}
 
 	}
