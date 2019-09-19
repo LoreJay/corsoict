@@ -155,6 +155,7 @@ public class Model {
 		}
 		
 		/**
+		 * Aggiunge un prodotto sia al DB che a TableProdottoScontrino
 		 * 
 		 * @param prodotto
 		 */
@@ -170,10 +171,38 @@ public class Model {
 		}
 		
 		/**
+		 * Aggiorna quantità e prezzo del prodotto sia nel DB che in TableProdottoScontrino
+		 * @param prodotto
+		 */
+		
+		public void aggiornaQtaPrezzo (Product prodotto) {
+			try {
+				
+				int oldQta = getQtaDB(prodotto.codice);
+				float oldPrezzo = getPrezzoDB(prodotto.codice);
+				
+				int newQta = oldQta++;
+				float newPrezzo = oldPrezzo + prodotto.prezzo;
+				
+				aggiornaQtaPrezzoDB(prodotto.codice, newQta, newPrezzo);
+				
+				for (Product aux : this) {
+					if (prodotto.getcodice().equals(aux.getcodice())) {
+						aux.updateQtaAndPrezzo();
+					}
+				}		
+				
+			} catch (SQLException sqle) {
+				
+			}
+		}
+		
+		
+		/**
 		 * Aggiungi prodotto a prodotti_scontrini 
 		 */
-
-		public void aggiungiProdottoDB(int codScontrino, String codiceProdotto, int qta, float prezzo_applicato)
+		
+		private void aggiungiProdottoDB(int codScontrino, String codiceProdotto, int qta, float prezzo_applicato)
 				throws SQLException {
 
 			stmt_addProduct.setInt(1, codScontrino);
@@ -183,6 +212,7 @@ public class Model {
 
 			stmt_addProduct.executeUpdate();
 		}
+		
 
 		/**
 		 * Prende la quantià del prodotto
@@ -191,7 +221,7 @@ public class Model {
 		 * @throws SQLException 
 		 */
 
-		public int getQta(String codiceProdotto) throws SQLException {
+		private int getQtaDB (String codiceProdotto) throws SQLException {
 			int qta = 0;
 			
 			stmt_getPrezzo.setString(1, codiceProdotto);
@@ -214,7 +244,7 @@ public class Model {
 		 * @throws SQLException 
 		 */
 		
-		public float getPrezzo(String codiceProdotto) throws SQLException {
+		private float getPrezzoDB(String codiceProdotto) throws SQLException {
 			float prezzo = 0;
 			
 			stmt_getPrezzo.setString(1, codiceProdotto);
@@ -240,7 +270,7 @@ public class Model {
 		 * @throws SQLException
 		 */
 
-		public void aggiornaQta(String codice, int newQta, float newPrezzo) throws SQLException {
+		private void aggiornaQtaPrezzoDB(String codice, int newQta, float newPrezzo) throws SQLException {
 
 			stmt_editQtaPrezzo.setInt(1, newQta);
 			stmt_editQtaPrezzo.setFloat(2, newPrezzo);

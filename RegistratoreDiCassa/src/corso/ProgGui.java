@@ -186,4 +186,8 @@ public class ProgGui extends JFrame implements InterListener {
 			list.aggiungiProdotto(prodottoDaAggiungere);
 	}
 	
+	public static void run() {
+		
+	}
+	
 }
